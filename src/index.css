@@ -21,12 +21,11 @@ section {
   bottom: 0;
 }
 
-h1 {
+.ui-wrapper {
   position: absolute;
-  top: 1em;
   left: 1em;
-  color: white;
-  z-index: 1;
+  top: 2em;
+  bottom: 2em;
 }
 
 h2 {
@@ -36,4 +35,10 @@ h2 {
   top: 0;
   text-align: right;
   margin-right: 1em;
+}
+
+.sketch-ui-panel {
+  display: inline-block;
+  position: sticky;
+  top: 2em;
 }
