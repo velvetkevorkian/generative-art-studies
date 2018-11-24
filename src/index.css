@@ -1,0 +1,39 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+section {
+  height: 100vh;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.header-wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+h1 {
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  color: white;
+  z-index: 1;
+}
+
+h2 {
+  color: green;
+  padding: 2em 0;
+  position: sticky;
+  top: 0;
+  text-align: right;
+  margin-right: 1em;
+}
