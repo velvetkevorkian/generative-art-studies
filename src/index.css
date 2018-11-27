@@ -5,7 +5,10 @@
 }
 
 body {
+  background: #000;
+  color: #f3f3f3;
   overflow-x: hidden;
+  font-family: sans-serif;
 }
 
 section {
@@ -29,7 +32,6 @@ section {
 }
 
 h2 {
-  color: green;
   padding: 2em 0;
   position: sticky;
   top: 0;
