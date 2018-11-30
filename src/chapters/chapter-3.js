@@ -1,12 +1,25 @@
 import p5 from 'p5'
 import UI from '@velvetkevorkian/sketch-ui'
+import {hexToHSL} from '../utils.js'
 import '@velvetkevorkian/sketch-ui/src/ui.css'
+
+let HSLStroke
 
 export default new p5(p => {
   const vars = {
     backgroundColor: { value: '#000000' },
     strokeColor: { value: '#ff0000' },
-    strokeAlpha: { value: 20 },
+    strokeAlpha: {
+      value: 0.025,
+      max: 1,
+      step: 0.001
+    },
+    modulateStroke: { value: true },
+    modulateValue: {
+      value: 0.08,
+      max: 1,
+      step: 0.01
+    },
     loop: {
       value: true,
       callback: (val, p) => {
@@ -37,7 +50,13 @@ export default new p5(p => {
     ui = new UI(vars, options).proxy
     p.createCanvas(p.windowWidth, p.windowHeight)
     p.background(ui.backgroundColor)
+    p.colorMode(p.HSL)
+
+    const c = hexToHSL(ui.strokeColor)
+    HSLStroke = p.color(c.h, c.s, c.l, ui.strokeAlpha)
+
     if(!ui.loop) p.noLoop()
+
     p.blendMode(p[ui.blendMode])
   }
 
@@ -51,7 +70,7 @@ export default new p5(p => {
 
     p.strokeWeight(2)
 
-    p.stroke(p.rgba(ui.strokeColor, ui.strokeAlpha))
+    p.stroke(HSLStroke)
 
     let lastX = startX, lastY = startY
 
@@ -61,6 +80,17 @@ export default new p5(p => {
       p.line(lastX, lastY, x, y)
       lastX = x
       lastY = y
+    }
+
+    if(ui.modulateStroke) {
+      const newStroke = {
+        h: p.hue(HSLStroke) + ui.modulateValue,
+        s: p.saturation(HSLStroke),
+        l: p.lightness(HSLStroke),
+        a: ui.strokeAlpha
+      }
+
+      HSLStroke = p.color(newStroke.h, newStroke.s, newStroke.l, newStroke.a)
     }
   }
 
