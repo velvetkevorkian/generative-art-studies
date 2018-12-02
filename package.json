@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "@velvetkevorkian/sketch-ui": "^0.0.3",
+    "@velvetkevorkian/sketch-utils": "0.0.1",
     "p5": "^0.7.2"
   },
   "devDependencies": {

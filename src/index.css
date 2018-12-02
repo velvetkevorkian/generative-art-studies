@@ -43,4 +43,5 @@ h2 {
   display: inline-block;
   position: sticky;
   top: 2em;
+  max-height: calc(100vh - 3em);
 }

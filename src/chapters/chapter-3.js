@@ -1,6 +1,6 @@
 import p5 from 'p5'
 import UI from '@velvetkevorkian/sketch-ui'
-import {hexToHSL} from '../utils.js'
+import { hexToHSL } from '@velvetkevorkian/sketch-utils'
 import '@velvetkevorkian/sketch-ui/src/ui.css'
 
 let HSLStroke
@@ -42,21 +42,17 @@ export default new p5(p => {
   let ui
 
   p.setup = () => {
+    p.createCanvas(p.windowWidth, p.windowHeight)
+    p.colorMode(p.HSL)
     const options = {
       context: p,
       selector: '.chapter-3-ui'
     }
-
     ui = new UI(vars, options).proxy
-    p.createCanvas(p.windowWidth, p.windowHeight)
+
     p.background(ui.backgroundColor)
-    p.colorMode(p.HSL)
-
-    const c = hexToHSL(ui.strokeColor)
-    HSLStroke = p.color(c.h, c.s, c.l, ui.strokeAlpha)
-
+    HSLStroke = p.colorFromObject(hexToHSL(ui.strokeColor), ui.strokeAlpha)
     if(!ui.loop) p.noLoop()
-
     p.blendMode(p[ui.blendMode])
   }
 
@@ -86,11 +82,9 @@ export default new p5(p => {
       const newStroke = {
         h: p.hue(HSLStroke) + ui.modulateValue,
         s: p.saturation(HSLStroke),
-        l: p.lightness(HSLStroke),
-        a: ui.strokeAlpha
+        l: p.lightness(HSLStroke)
       }
-
-      HSLStroke = p.color(newStroke.h, newStroke.s, newStroke.l, newStroke.a)
+      HSLStroke = p.colorFromObject(newStroke, ui.strokeAlpha)
     }
   }
 
@@ -100,9 +94,18 @@ export default new p5(p => {
     return col
   }
 
+  p.colorFromObject = (obj, alpha = 1) => {
+    return p.color(obj.h, obj.s, obj.l, alpha)
+  }
+
   p.clear = () => {
     p.blendMode(p.BLEND)
     p.background(ui.backgroundColor)
     p.blendMode(p[ui.blendMode])
+  }
+
+  p.windowResized = () => {
+    p.resizeCanvas(p.windowWidth, p.windowHeight)
+    p.clear()
   }
 }, document.querySelector('#chapter-3'))
