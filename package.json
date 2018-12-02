@@ -1,5 +1,5 @@
 {
-  "name": "generative-art-book-studies",
+  "name": "generative-art-studies",
   "version": "0.0.1",
   "dependencies": {
     "@velvetkevorkian/sketch-ui": "^0.0.3",
@@ -22,7 +22,7 @@
   "scripts": {
     "build": "webpack --config webpack.production.js",
     "start": "webpack-dev-server --config webpack.dev.js",
-    "ship": "rsync -avz --delete generative-art-book-studies $npm_config_labs_deploy_path",
+    "ship": "rsync -avz --delete generative-art-studies $npm_config_labs_deploy_path",
     "deploy": "npm run build && npm run ship"
   },
   "license": "ISC"
