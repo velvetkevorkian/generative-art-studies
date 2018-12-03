@@ -55,6 +55,14 @@ export default new p5(p => {
       type: 'button',
       label: 'Clear',
       callback: p => { p.clear() }
+    },
+    saveButton: {
+      type: 'button',
+      label: 'Save image',
+      callback: p => {
+        const data = p.canvas.toDataURL()
+        window.open(data)
+      }
     }
   }
 
