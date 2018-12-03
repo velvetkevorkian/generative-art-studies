@@ -3,11 +3,13 @@ import UI from '@velvetkevorkian/sketch-ui'
 import { hexToHSL } from '@velvetkevorkian/sketch-utils'
 import '@velvetkevorkian/sketch-ui/src/ui.css'
 
-let HSLStroke
+let HSLStroke, ui
 
 export default new p5(p => {
   const vars = {
-    backgroundColor: { value: '#000000' },
+    backgroundColor: {
+      value: '#000000'
+    },
     strokeColor: {
       value: '#ff0000',
       callback: (val, p) => {
@@ -19,7 +21,14 @@ export default new p5(p => {
       max: 1,
       step: 0.001
     },
-    modulateStroke: { value: true },
+    strokeWeight: {
+      value: 1,
+      min: 1,
+      max: 10
+    },
+    modulateStroke: {
+      value: true
+    },
     modulateValue: {
       value: 0.08,
       max: 1,
@@ -36,15 +45,18 @@ export default new p5(p => {
       label: 'Blend Mode',
       callback: (val, p) => { p.blendMode(p[val]) }
     },
-    clear: { value: false },
+    useVertices: {
+      value: true
+    },
+    clear: {
+      value: false
+    },
     clearButton: {
       type: 'button',
       label: 'Clear',
       callback: p => { p.clear() }
     }
   }
-
-  let ui
 
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight)
@@ -59,6 +71,7 @@ export default new p5(p => {
     HSLStroke = p.colorFromObject(hexToHSL(ui.strokeColor), ui.strokeAlpha)
     if(!ui.loop) p.noLoop()
     p.blendMode(p[ui.blendMode])
+    p.noFill()
   }
 
   p.draw = () => {
@@ -69,19 +82,25 @@ export default new p5(p => {
     const step = 10
     const startY = p.windowHeight / 2
 
-    p.strokeWeight(2)
+    p.strokeWeight(ui.strokeWeight)
 
     p.stroke(HSLStroke)
 
+    if(ui.useVertices) p.beginShape()
     let lastX = startX, lastY = startY
 
     for(let x = startX + step; x < endX; x += step) {
-      let ystep = (Math.random() - 0.5) * 10
-      let y = lastY + ystep
-      p.line(lastX, lastY, x, y)
+      const ystep = (Math.random() - 0.5) * 10
+      const y = lastY + ystep
+
+      if(ui.useVertices) p.vertex(lastX, lastY)
+      else p.line(lastX, lastY, x, y)
+
       lastX = x
       lastY = y
     }
+
+    if(ui.useVertices) p.endShape()
 
     if(ui.modulateStroke) {
       const newStroke = {
