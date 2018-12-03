@@ -8,7 +8,12 @@ let HSLStroke
 export default new p5(p => {
   const vars = {
     backgroundColor: { value: '#000000' },
-    strokeColor: { value: '#ff0000' },
+    strokeColor: {
+      value: '#ff0000',
+      callback: (val, p) => {
+        HSLStroke = p.colorFromObject(hexToHSL(val))
+      }
+    },
     strokeAlpha: {
       value: 0.025,
       max: 1,
