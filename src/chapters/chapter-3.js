@@ -41,12 +41,15 @@ export default new p5(p => {
       }
     },
     blendMode: {
-      value: ['ADD', 'BLEND'],
+      value: ['ADD', 'BLEND', 'DARKEST', 'LIGHTEST', 'DIFFERENCE', 'EXCLUSION', 'MULTIPLY', 'SCREEN', 'REPLACE', 'OVERLAY', 'HARD_LIGHT', 'SOFT_LIGHT', 'DODGE', 'BURN'],
       label: 'Blend Mode',
       callback: (val, p) => { p.blendMode(p[val]) }
     },
     useVertices: {
       value: true
+    },
+    shapeType: {
+      value: ['none', 'POINTS', 'LINES', 'TRIANGLES', 'TRIANGLE_STRIP', 'TRIANGLE_FAN', 'QUADS', 'QUAD_STRIP']
     },
     clear: {
       value: false
@@ -94,7 +97,9 @@ export default new p5(p => {
 
     p.stroke(HSLStroke)
 
-    if(ui.useVertices) p.beginShape()
+    if(ui.useVertices) {
+      ui.shapeType == 'none' ? p.beginShape() : p.beginShape(p[ui.shapeType])
+    }
     let lastX = startX, lastY = startY
 
     for(let x = startX + step; x < endX; x += step) {
