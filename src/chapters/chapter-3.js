@@ -48,6 +48,16 @@ export default new p5(p => {
     useVertices: {
       value: true
     },
+    xStep: {
+      value: 10,
+      max: 100,
+      min: 1
+    },
+    yScale: {
+      value: 10,
+      max: 100,
+      min: 1
+    },
     shapeType: {
       value: ['none', 'POINTS', 'LINES', 'TRIANGLES', 'TRIANGLE_STRIP', 'TRIANGLE_FAN', 'QUADS', 'QUAD_STRIP']
     },
@@ -88,9 +98,7 @@ export default new p5(p => {
   p.draw = () => {
     if(ui.clear) p.clear()
 
-    const offset = 0
-    const startX = offset, endX = p.windowWidth - offset
-    const step = 10
+    const startX = 0, endX = p.windowWidth + (ui.xStep * 2)
     const startY = p.windowHeight / 2
 
     p.strokeWeight(ui.strokeWeight)
@@ -102,8 +110,8 @@ export default new p5(p => {
     }
     let lastX = startX, lastY = startY
 
-    for(let x = startX + step; x < endX; x += step) {
-      const ystep = (Math.random() - 0.5) * 10
+    for(let x = startX + ui.xStep; x < endX; x += ui.xStep) {
+      const ystep = (Math.random() - 0.5) * ui.yScale
       const y = lastY + ystep
 
       if(ui.useVertices) p.vertex(lastX, lastY)
