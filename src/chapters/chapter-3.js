@@ -6,15 +6,15 @@ import '@velvetkevorkian/sketch-ui/src/ui.css'
 let HSLStroke, ui
 
 export default new p5(p => {
+  let pauseCallbacks = false
+
   const vars = {
     backgroundColor: {
       value: '#000000'
     },
     strokeColor: {
       value: '#ff0000',
-      callback: (val, p) => {
-        HSLStroke = p.colorFromObject(hexToHSL(val))
-      }
+      callback: (val, p) => {if(!pauseCallbacks) HSLStroke = p.colorFromObject(hexToHSL(val))}
     },
     strokeAlpha: {
       value: 0.025,
@@ -36,14 +36,12 @@ export default new p5(p => {
     },
     loop: {
       value: true,
-      callback: (val, p) => {
-        val == true ? p.loop() : p.noLoop()
-      }
+      callback: (val, p) => val ? p.loop() : p.noLoop()
     },
     blendMode: {
-      value: ['ADD', 'BLEND', 'DARKEST', 'LIGHTEST', 'DIFFERENCE', 'EXCLUSION', 'MULTIPLY', 'SCREEN', 'REPLACE', 'OVERLAY', 'HARD_LIGHT', 'SOFT_LIGHT', 'DODGE', 'BURN'],
+      options: ['ADD', 'BLEND', 'DARKEST', 'LIGHTEST', 'DIFFERENCE', 'EXCLUSION', 'MULTIPLY', 'SCREEN', 'REPLACE', 'OVERLAY', 'HARD_LIGHT', 'SOFT_LIGHT', 'DODGE', 'BURN'],
       label: 'Blend Mode',
-      callback: (val, p) => { p.blendMode(p[val]) }
+      callback: (val, p) => p.blendMode(p[val])
     },
     useVertices: {
       value: true
@@ -59,7 +57,7 @@ export default new p5(p => {
       min: 1
     },
     shapeType: {
-      value: ['none', 'POINTS', 'LINES', 'TRIANGLES', 'TRIANGLE_STRIP', 'TRIANGLE_FAN', 'QUADS', 'QUAD_STRIP']
+      options: ['none', 'POINTS', 'LINES', 'TRIANGLES', 'TRIANGLE_STRIP', 'TRIANGLE_FAN', 'QUADS', 'QUAD_STRIP']
     },
     clear: {
       value: false
@@ -67,7 +65,7 @@ export default new p5(p => {
     clearButton: {
       type: 'button',
       label: 'Clear',
-      callback: p => { p.clear() }
+      callback: p => p.clear()
     },
     saveButton: {
       type: 'button',
@@ -84,7 +82,8 @@ export default new p5(p => {
     p.colorMode(p.HSL)
     const options = {
       context: p,
-      selector: '.chapter-3-ui'
+      selector: '.chapter-3-ui',
+      uid: 'chapter-3-ui'
     }
     ui = new UI(vars, options).proxy
 
@@ -130,7 +129,20 @@ export default new p5(p => {
         l: p.lightness(HSLStroke)
       }
       HSLStroke = p.colorFromObject(newStroke, ui.strokeAlpha)
+      pauseCallbacks = true
+      ui.strokeColor = p.colorToHex(HSLStroke)
+      pauseCallbacks = false
     }
+  }
+
+  p.colorToHex = function(col) {
+    let result = [
+      ('0' + Math.floor(p.red(col)).toString(16)),
+      ('0' + Math.floor(p.green(col)).toString(16)),
+      ('0' + Math.floor(p.blue(col)).toString(16))
+    ].map(i => i.substring(i.length - 2))
+
+    return `#${result.join('')}`
   }
 
   p.rgba = function(hex, alpha) {
