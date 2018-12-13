@@ -1,6 +1,6 @@
 import p5 from 'p5'
 import UI from '@velvetkevorkian/sketch-ui'
-import { hexToHSL, colorToHex, colorFromObject } from '@velvetkevorkian/sketch-utils'
+import { hexToHSL, colorToHex, colorFromObject, blendModes, shapeTypes } from '@velvetkevorkian/sketch-utils'
 import '@velvetkevorkian/sketch-ui/src/ui.css'
 
 export default new p5(p => {
@@ -12,7 +12,11 @@ export default new p5(p => {
     },
     strokeColor: {
       value: '#ff0000',
-      callback: (val, p) => {if(!pauseCallbacks) HSLStroke = p.colorFromObject(hexToHSL(val))}
+      callback: (val, p) => {
+        if(!pauseCallbacks) {
+          HSLStroke = colorFromObject(hexToHSL(val), 1, p)
+        }
+      }
     },
     strokeAlpha: {
       value: 0.025,
@@ -37,7 +41,7 @@ export default new p5(p => {
       callback: (val, p) => val ? p.loop() : p.noLoop()
     },
     blendMode: {
-      options: ['ADD', 'BLEND', 'DARKEST', 'LIGHTEST', 'DIFFERENCE', 'EXCLUSION', 'MULTIPLY', 'SCREEN', 'REPLACE', 'OVERLAY', 'HARD_LIGHT', 'SOFT_LIGHT', 'DODGE', 'BURN'],
+      options: blendModes(),
       label: 'Blend Mode',
       callback: (val, p) => p.blendMode(p[val])
     },
@@ -55,7 +59,7 @@ export default new p5(p => {
       min: 1
     },
     shapeType: {
-      options: ['none', 'POINTS', 'LINES', 'TRIANGLES', 'TRIANGLE_STRIP', 'TRIANGLE_FAN', 'QUADS', 'QUAD_STRIP']
+      options: shapeTypes()
     },
     clear: {
       value: false
