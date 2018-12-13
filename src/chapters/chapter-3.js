@@ -1,12 +1,10 @@
 import p5 from 'p5'
 import UI from '@velvetkevorkian/sketch-ui'
-import { hexToHSL } from '@velvetkevorkian/sketch-utils'
+import { hexToHSL, colorToHex, colorFromObject } from '@velvetkevorkian/sketch-utils'
 import '@velvetkevorkian/sketch-ui/src/ui.css'
 
-let HSLStroke, ui
-
 export default new p5(p => {
-  let pauseCallbacks = false
+  let HSLStroke, ui, pauseCallbacks = false
 
   const vars = {
     backgroundColor: {
@@ -88,7 +86,7 @@ export default new p5(p => {
     ui = new UI(vars, options).proxy
 
     p.background(ui.backgroundColor)
-    HSLStroke = p.colorFromObject(hexToHSL(ui.strokeColor), ui.strokeAlpha)
+    HSLStroke = colorFromObject(hexToHSL(ui.strokeColor), ui.strokeAlpha, p)
     if(!ui.loop) p.noLoop()
     p.blendMode(p[ui.blendMode])
     p.noFill()
@@ -128,31 +126,11 @@ export default new p5(p => {
         s: p.saturation(HSLStroke),
         l: p.lightness(HSLStroke)
       }
-      HSLStroke = p.colorFromObject(newStroke, ui.strokeAlpha)
+      HSLStroke = colorFromObject(newStroke, ui.strokeAlpha, p)
       pauseCallbacks = true
-      ui.strokeColor = p.colorToHex(HSLStroke)
+      ui.strokeColor = colorToHex(HSLStroke, p)
       pauseCallbacks = false
     }
-  }
-
-  p.colorToHex = function(col) {
-    let result = [
-      ('0' + Math.floor(p.red(col)).toString(16)),
-      ('0' + Math.floor(p.green(col)).toString(16)),
-      ('0' + Math.floor(p.blue(col)).toString(16))
-    ].map(i => i.substring(i.length - 2))
-
-    return `#${result.join('')}`
-  }
-
-  p.rgba = function(hex, alpha) {
-    const col = p.color(hex)
-    col.setAlpha(alpha)
-    return col
-  }
-
-  p.colorFromObject = (obj, alpha = 1) => {
-    return p.color(obj.h, obj.s, obj.l, alpha)
   }
 
   p.clear = () => {
