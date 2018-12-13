@@ -26,9 +26,9 @@ section {
 
 .ui-wrapper {
   position: absolute;
-  left: 1em;
-  top: 2em;
-  bottom: 2em;
+  left: 0;
+  top: 0;
+  bottom: 0;
 }
 
 h2 {
@@ -40,8 +40,5 @@ h2 {
 }
 
 .sketch-ui-panel {
-  display: inline-block;
   position: sticky;
-  top: 2em;
-  max-height: calc(100vh - 3em);
 }
