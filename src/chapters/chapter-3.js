@@ -36,17 +36,10 @@ export default new p5(p => {
       max: 1,
       step: 0.01
     },
-    loop: {
-      value: true,
-      callback: (val, p) => val ? p.loop() : p.noLoop()
-    },
     blendMode: {
       options: blendModes(),
       label: 'Blend Mode',
       callback: (val, p) => p.blendMode(p[val])
-    },
-    useVertices: {
-      value: true
     },
     xStep: {
       value: 10,
@@ -58,8 +51,15 @@ export default new p5(p => {
       max: 100,
       min: 1
     },
+    useVertices: {
+      value: true
+    },
     shapeType: {
       options: shapeTypes()
+    },
+    loop: {
+      value: true,
+      callback: (val, p) => val ? p.loop() : p.noLoop()
     },
     clear: {
       value: false
