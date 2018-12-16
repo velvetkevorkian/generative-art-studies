@@ -28,7 +28,7 @@ export default new p5(p => {
       min: 1,
       max: 10
     },
-    modulateStroke: {
+    animateStrokeColor: {
       value: true
     },
     modulateValue: {
@@ -44,6 +44,14 @@ export default new p5(p => {
     radius: {
       value: 50,
       max: 1000
+    },
+    animateRadius: {
+      value: true
+    },
+    animateRadiusAmount: {
+      value: 5,
+      min: 0,
+      max: 20
     },
     noise: {
       value: 5,
@@ -126,12 +134,18 @@ export default new p5(p => {
       p.vertex(xpos + xnoise, ypos + ynoise)
     }
     p.endShape()
-
+    p.updateRadius()
     p.updateStroke()
   }
 
+  p.updateRadius = () => {
+    if(ui.animateRadius) {
+      ui.radius = ui.radius + p.random(ui.animateRadiusAmount * -1, ui.animateRadiusAmount)
+    }
+  }
+
   p.updateStroke = () => {
-    if(ui.modulateStroke) {
+    if(ui.animateStrokeColor) {
       const newStroke = {
         h: p.hue(HSLStroke) + ui.modulateValue,
         s: p.saturation(HSLStroke),
