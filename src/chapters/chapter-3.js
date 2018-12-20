@@ -85,7 +85,8 @@ export default new p5(p => {
     const options = {
       context: p,
       selector: '.chapter-3-ui',
-      uid: 'chapter-3-ui'
+      uid: 'chapter-3-ui',
+      save: true
     }
     ui = new UI(vars, options).proxy
 
