@@ -39,9 +39,9 @@ export default new p5(p => {
       label: 'Blend Mode',
       callback: (val, p) => p.blendMode(p[val])
     },
-    xStep: {
-      value: 10,
-      max: 100,
+    steps: {
+      value: 150,
+      max: 1000,
       min: 1
     },
     yScale: {
@@ -95,25 +95,18 @@ export default new p5(p => {
   p.draw = () => {
     if(ui.clear) p.clear()
 
-    const startX = 0, endX = p.windowWidth + (ui.xStep * 2)
-    const startY = p.windowHeight / 2
-
     p.strokeWeight(ui.strokeWeight)
-
     p.stroke(HSLStroke)
 
     ui.shapeType == 'none' ? p.beginShape() : p.beginShape(p[ui.shapeType])
 
-    let lastX = startX, lastY = startY
+    const xStep = p.windowWidth / ui.steps
+    let y = p.windowHeight / 2
 
-    for(let x = startX + ui.xStep; x < endX; x += ui.xStep) {
-      const ystep = (Math.random() - 0.5) * ui.yScale
-      const y = lastY + ystep
-
-      p.vertex(lastX, lastY)
-
-      lastX = x
-      lastY = y
+    for(let x = 0; x <= p.windowWidth; x += xStep) {
+      const ystep = ((Math.random() - 0.5) * ui.yScale)
+      y = y + ystep
+      p.vertex(x, y)
     }
 
     p.endShape()
