@@ -28,13 +28,11 @@ export default new p5(p => {
       min: 1,
       max: 10
     },
-    modulateStroke: {
-      value: true
-    },
-    modulateValue: {
+    strokeColorMod: {
       value: 0.08,
       max: 1,
-      step: 0.01
+      step: 0.01,
+      min: 0
     },
     blendMode: {
       options: blendModes(),
@@ -50,9 +48,6 @@ export default new p5(p => {
       value: 10,
       max: 100,
       min: 1
-    },
-    useVertices: {
-      value: true
     },
     shapeType: {
       options: shapeTypes()
@@ -107,27 +102,25 @@ export default new p5(p => {
 
     p.stroke(HSLStroke)
 
-    if(ui.useVertices) {
-      ui.shapeType == 'none' ? p.beginShape() : p.beginShape(p[ui.shapeType])
-    }
+    ui.shapeType == 'none' ? p.beginShape() : p.beginShape(p[ui.shapeType])
+
     let lastX = startX, lastY = startY
 
     for(let x = startX + ui.xStep; x < endX; x += ui.xStep) {
       const ystep = (Math.random() - 0.5) * ui.yScale
       const y = lastY + ystep
 
-      if(ui.useVertices) p.vertex(lastX, lastY)
-      else p.line(lastX, lastY, x, y)
+      p.vertex(lastX, lastY)
 
       lastX = x
       lastY = y
     }
 
-    if(ui.useVertices) p.endShape()
+    p.endShape()
 
-    if(ui.modulateStroke) {
+    if(ui.strokeColorMod != 0) {
       const newStroke = {
-        h: p.hue(HSLStroke) + ui.modulateValue,
+        h: p.hue(HSLStroke) + ui.strokeColorMod,
         s: p.saturation(HSLStroke),
         l: p.lightness(HSLStroke)
       }

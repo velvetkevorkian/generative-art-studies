@@ -28,13 +28,11 @@ export default new p5(p => {
       min: 1,
       max: 10
     },
-    animateStrokeColor: {
-      value: true
-    },
-    modulateValue: {
+    strokeColorMod: {
       value: 0.08,
       max: 1,
-      step: 0.01
+      step: 0.01,
+      min: 0
     },
     steps: {
       value: 200,
@@ -44,9 +42,6 @@ export default new p5(p => {
     radius: {
       value: 50,
       max: 1000
-    },
-    animateRadius: {
-      value: true
     },
     animateRadiusAmount: {
       value: 5,
@@ -140,15 +135,15 @@ export default new p5(p => {
   }
 
   p.updateRadius = () => {
-    if(ui.animateRadius) {
+    if(ui.animateRadiusAmount != 0) {
       ui.radius = ui.radius + p.random(ui.animateRadiusAmount * -1, ui.animateRadiusAmount)
     }
   }
 
   p.updateStroke = () => {
-    if(ui.animateStrokeColor) {
+    if(ui.strokeColorMod != 0) {
       const newStroke = {
-        h: p.hue(HSLStroke) + ui.modulateValue,
+        h: p.hue(HSLStroke) + ui.strokeColorMod,
         s: p.saturation(HSLStroke),
         l: p.lightness(HSLStroke)
       }
