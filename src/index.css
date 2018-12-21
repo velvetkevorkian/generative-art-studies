@@ -11,6 +11,10 @@ body {
   font-family: sans-serif;
 }
 
+header {
+  padding: 1em;
+}
+
 section {
   height: 100vh;
   margin-bottom: 0;
