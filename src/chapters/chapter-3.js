@@ -62,7 +62,7 @@ export default new p5(p => {
     clearButton: {
       type: 'button',
       label: 'Clear',
-      callback: p => p.clear()
+      callback: () => clear()
     },
     saveButton: {
       type: 'button',
@@ -93,7 +93,7 @@ export default new p5(p => {
   }
 
   p.draw = () => {
-    if(ui.clear) p.clear()
+    if(ui.clear) clear()
 
     p.strokeWeight(ui.strokeWeight)
     p.stroke(HSLStroke)
@@ -124,14 +124,13 @@ export default new p5(p => {
     }
   }
 
-  p.clear = () => {
-    p.blendMode(p.BLEND)
+  const clear = () => {
+    p.clear()
     p.background(ui.backgroundColor)
-    p.blendMode(p[ui.blendMode])
   }
 
   p.windowResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight)
-    p.clear()
+    clear()
   }
 }, document.querySelector('#chapter-3'))

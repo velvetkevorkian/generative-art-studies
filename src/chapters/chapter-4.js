@@ -75,7 +75,7 @@ export default new p5(p => {
     clearButton: {
       type: 'button',
       label: 'Clear',
-      callback: p => p.clear()
+      callback: () => clear()
     },
     saveButton: {
       type: 'button',
@@ -108,7 +108,7 @@ export default new p5(p => {
   }
 
   p.draw = () => {
-    if(ui.clear) p.clear()
+    if(ui.clear) clear()
 
     p.strokeWeight(ui.strokeWeight)
     p.stroke(HSLStroke)
@@ -130,17 +130,17 @@ export default new p5(p => {
       p.vertex(xpos + xnoise, ypos + ynoise)
     }
     p.endShape()
-    p.updateRadius()
-    p.updateStroke()
+    updateRadius()
+    updateStroke()
   }
 
-  p.updateRadius = () => {
+  const updateRadius = () => {
     if(ui.animateRadiusAmount != 0) {
       ui.radius = ui.radius + p.random(ui.animateRadiusAmount * -1, ui.animateRadiusAmount)
     }
   }
 
-  p.updateStroke = () => {
+  const updateStroke = () => {
     if(ui.strokeColorMod != 0) {
       const newStroke = {
         h: p.hue(HSLStroke) + ui.strokeColorMod,
@@ -154,10 +154,9 @@ export default new p5(p => {
     }
   }
 
-  p.clear = () => {
-    p.blendMode(p.BLEND)
+  const clear = () => {
+    p.clear()
     p.background(ui.backgroundColor)
-    p.blendMode(p[ui.blendMode])
   }
 
   p.windowResized = () => {
