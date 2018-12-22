@@ -5,7 +5,8 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: './dist'
+    contentBase: './generative-art-studies',
+    disableHostCheck: true
   },
   module: {
     rules: [
