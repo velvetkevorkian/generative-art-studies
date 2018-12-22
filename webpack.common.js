@@ -5,7 +5,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 module.exports = {
   entry: './src/index.js',
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(['generative-art-studies']),
     new HtmlWebpackPlugin({
       title: 'Generative Art Studies',
       template: 'index.html'
