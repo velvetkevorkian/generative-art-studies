@@ -39,12 +39,22 @@ export default new p5(p => {
     noisePositionIncrement: {
       value: 0.1,
       min: 0,
-      max: 100,
-      step: 0.5
+      max: 10,
+      step: 0.1
+    },
+    drawLines: {
+      value: true
+    },
+    drawRects: {
+      value: true
     },
     loop: {
       value: true,
       callback: (val, p) => val ? p.loop() : p.noLoop()
+    },
+    frameRate: {
+      type: 'text',
+      value: 0
     },
     saveButton: {
       type: 'button',
@@ -72,8 +82,12 @@ export default new p5(p => {
     p.background(ui.backgroundColor)
     if(!ui.loop) p.noLoop()
     p.rectMode(p.CENTER)
+    p.strokeCap(p.SQUARE)
     p.blendMode(p.ADD)
-    p.noStroke()
+
+    window.setInterval(() => {
+      ui.frameRate = p.frameRate().toFixed(2)
+    }, 1000)
   }
 
   p.draw = () => {
@@ -90,17 +104,29 @@ export default new p5(p => {
           ypos = y + yStep/2,
           zpos = cachedFrameCount / ui.noiseFactor,
           noise = p.noise((xpos + noiseXPosition) / ui.noiseFactor, (ypos + noiseYPosition) / ui.noiseFactor, zpos),
-          alpha = 0.75,
-          xSize = noise * xStep * ui.scaleFactor,
-          ySize = noise * yStep * ui.scaleFactor,
+          alpha = noise,
+          xSize = noise * xStep,
+          ySize = noise * yStep,
+          xSizeScaled = noise * xStep * ui.scaleFactor,
+          ySizeScaled = noise * yStep * ui.scaleFactor,
           hue = noise * 360,
           col = p.color(hue, 50, 50, alpha)
+
         p.strokeWeight(ui.strokeWeight)
         p.stroke(col)
         p.push()
         p.translate(xpos, ypos)
-        p.rotate(noise * p.TWO_PI)
-        p.line(xSize * -0.5, ySize * -0.5, xSize * 0.5, ySize * 0.5)
+
+        if(ui.drawLines) {
+          p.rotate(noise * p.TWO_PI)
+          p.line(xSizeScaled * -0.5, ySizeScaled * -0.5, xSizeScaled * 0.5, ySizeScaled * 0.5)
+        }
+
+        if(ui.drawRects) {
+          p.noStroke()
+          p.fill(col)
+          p.rect(0, 0, xSize, ySize)
+        }
         p.pop()
       }
     }
