@@ -48,6 +48,9 @@ export default new p5(p => {
     drawRects: {
       value: true
     },
+    drawArcs: {
+      value: true
+    },
     loop: {
       value: true,
       callback: (val, p) => val ? p.loop() : p.noLoop()
@@ -120,6 +123,11 @@ export default new p5(p => {
         if(ui.drawLines) {
           p.rotate(noise * p.TWO_PI)
           p.line(xSizeScaled * -0.5, ySizeScaled * -0.5, xSizeScaled * 0.5, ySizeScaled * 0.5)
+        }
+
+        if(ui.drawArcs) {
+          p.noFill()
+          p.arc(0, 0, xSizeScaled, ySizeScaled, 0, noise * p.TWO_PI)
         }
 
         if(ui.drawRects) {
